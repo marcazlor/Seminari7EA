@@ -39,7 +39,7 @@ class AuthRoutes{
         //if the user specifies his roles, we search these roles on the database
 
         const savedUser = await newUser.save();
-        const token = jwt.sign({id: savedUser._id}, 'secret',{
+        const token = jwt.sign({id: savedUser._id, role: 'admin'}, 'secret',{
             expiresIn: 3600 //seconds
         });
         res.status(200).json({token});
@@ -52,7 +52,7 @@ class AuthRoutes{
         const matchPassword = await bcrypt.compare(req.body.password, userFound.password);
         if(!matchPassword) return res.status(401).json({token: null, message: "Ivalid password"});
 
-        const token = jwt.sign({id: userFound._id}, 'secret', {
+        const token = jwt.sign({id: userFound._id, role: 'admin'}, 'secret', {
             expiresIn: 3600
         });
 

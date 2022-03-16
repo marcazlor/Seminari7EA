@@ -22,7 +22,7 @@ class Server {
         this.routes();
     }
     config() {
-        const MONGO_URI = 'mongodb://localhost/authapi';
+        const MONGO_URI = 'mongodb://localhost/JWTapi';
         mongoose_1.default.connect(MONGO_URI || process.env.MONGODB_URL)
             .then(db => console.log('DB is connected'));
         //Settings

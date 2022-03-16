@@ -45,7 +45,7 @@ class AuthRoutes {
             }
             //if the user specifies his roles, we search these roles on the database
             const savedUser = yield newUser.save();
-            const token = jsonwebtoken_1.default.sign({ id: savedUser._id }, 'secret', {
+            const token = jsonwebtoken_1.default.sign({ id: savedUser._id, role: 'admin' }, 'secret', {
                 expiresIn: 3600 //seconds
             });
             res.status(200).json({ token });
@@ -59,7 +59,7 @@ class AuthRoutes {
             const matchPassword = yield bcryptjs_1.default.compare(req.body.password, userFound.password);
             if (!matchPassword)
                 return res.status(401).json({ token: null, message: "Ivalid password" });
-            const token = jsonwebtoken_1.default.sign({ id: userFound._id }, 'secret', {
+            const token = jsonwebtoken_1.default.sign({ id: userFound._id, role: 'admin' }, 'secret', {
                 expiresIn: 3600
             });
             res.json({ token: token });
