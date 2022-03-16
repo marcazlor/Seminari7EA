@@ -40,7 +40,7 @@ class PostRoutes{
     public async deletePost(req: Request, res: Response): Promise<void> {
         const {url} = req.params;
         await Post.findOneAndDelete({url});
-        res.json({response: 'Post Deletedd successfully'});
+        res.json({response: 'Post Deleted successfully'});
     }
     
     routes() {

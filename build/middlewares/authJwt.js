@@ -16,11 +16,12 @@ exports.isAdmin = exports.isModerator = exports.verifyToken = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Role_1 = __importDefault(require("../models/Role"));
+const config_1 = __importDefault(require("../config"));
 const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.headers["x-access-token"];
     let jwtPayload;
     try {
-        jwtPayload = jsonwebtoken_1.default.verify(token, 'secret');
+        jwtPayload = jsonwebtoken_1.default.verify(token, config_1.default.SECRET);
         res.locals.jwtPayload = jwtPayload;
     }
     catch (error) {
@@ -42,7 +43,7 @@ const isModerator = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     const user = yield User_1.default.findById(res.locals.jwtPayload.id);
     const roles = yield Role_1.default.find({ _id: { $in: user.roles } });
     for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name == 'moderator') {
+        if (roles[i].name == 'moderator' || roles[i].name == 'admin') {
             next();
             return;
         }

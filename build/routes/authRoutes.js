@@ -18,6 +18,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Role_1 = __importDefault(require("../models/Role"));
 const Role_2 = require("../models/Role");
+const config_1 = __importDefault(require("../config"));
 class AuthRoutes {
     constructor() {
         this.router = (0, express_1.Router)();
@@ -45,7 +46,7 @@ class AuthRoutes {
             }
             //if the user specifies his roles, we search these roles on the database
             const savedUser = yield newUser.save();
-            const token = jsonwebtoken_1.default.sign({ id: savedUser._id, role: 'admin' }, 'secret', {
+            const token = jsonwebtoken_1.default.sign({ id: savedUser._id, username: savedUser.username }, config_1.default.SECRET, {
                 expiresIn: 3600 //seconds
             });
             res.status(200).json({ token });
@@ -59,7 +60,7 @@ class AuthRoutes {
             const matchPassword = yield bcryptjs_1.default.compare(req.body.password, userFound.password);
             if (!matchPassword)
                 return res.status(401).json({ token: null, message: "Ivalid password" });
-            const token = jsonwebtoken_1.default.sign({ id: userFound._id, role: 'admin' }, 'secret', {
+            const token = jsonwebtoken_1.default.sign({ id: userFound._id, username: userFound.username }, config_1.default.SECRET, {
                 expiresIn: 3600
             });
             res.json({ token: token });

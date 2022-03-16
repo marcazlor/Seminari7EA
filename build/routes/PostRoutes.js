@@ -51,7 +51,7 @@ class PostRoutes {
         return __awaiter(this, void 0, void 0, function* () {
             const { url } = req.params;
             yield Post_1.default.findOneAndDelete({ url });
-            res.json({ response: 'Post Deletedd successfully' });
+            res.json({ response: 'Post Deleted successfully' });
         });
     }
     routes() {

@@ -3,6 +3,7 @@ import User from '../models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Role from '../models/Role';
+import config from "../config";
 import { match } from 'assert';
 import { userInfo } from 'os';
 
@@ -12,7 +13,7 @@ export const verifyToken = async (req: any, res: Response, next: NextFunction) =
     const token = req.headers["x-access-token"];
     let jwtPayload;
     try {
-        jwtPayload = <any>jwt.verify(token, 'secret');
+        jwtPayload = <any>jwt.verify(token, config.SECRET);
         res.locals.jwtPayload = jwtPayload;
       } catch (error) {
         //If token is not valid, respond with 401 (unauthorized)
@@ -35,7 +36,7 @@ export const isModerator = async (req: Request, res: Response, next: NextFunctio
     const roles = await Role.find({_id: {$in: user.roles}});
 
     for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name == 'moderator'){
+        if (roles[i].name == 'moderator' || roles[i].name == 'admin'){
             next();
             return;
         }
