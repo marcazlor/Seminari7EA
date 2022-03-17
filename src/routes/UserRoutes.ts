@@ -44,7 +44,7 @@ class UserRoutes{
 
     routes() {
         this.router.get('/', this.getUsers);
-        this.router.get('/:username', this.getUser);
+        this.router.get('/:username', authJwt.verifyToken, this.getUser);
         this.router.post('/', [authJwt.verifyToken, authJwt.isModerator], this.createUser);
         this.router.put('/:username',[authJwt.verifyToken, authJwt.isModerator], this.updateUser);
         this.router.delete('/:username',[authJwt.verifyToken, authJwt.isAdmin], this.deleteUser);

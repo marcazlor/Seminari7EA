@@ -55,8 +55,8 @@ class PostRoutes {
         });
     }
     routes() {
-        this.router.get('/', this.getPosts);
-        this.router.get('/:url', this.getPost);
+        this.router.get('/', index_1.authJwt.verifyToken, this.getPosts);
+        this.router.get('/:url', index_1.authJwt.verifyToken, this.getPost);
         this.router.post('/', [index_1.authJwt.verifyToken, index_1.authJwt.isModerator], this.createPost);
         this.router.put('/:url', [index_1.authJwt.verifyToken, index_1.authJwt.isModerator], this.updatePost);
         this.router.delete('/:url', [index_1.authJwt.verifyToken, index_1.authJwt.isAdmin], this.deletePost);

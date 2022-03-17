@@ -44,8 +44,8 @@ class PostRoutes{
     }
     
     routes() {
-        this.router.get('/', this.getPosts);
-        this.router.get('/:url', this.getPost);
+        this.router.get('/', authJwt.verifyToken, this.getPosts);
+        this.router.get('/:url', authJwt.verifyToken, this.getPost);
         this.router.post('/', [authJwt.verifyToken, authJwt.isModerator], this.createPost);
         this.router.put('/:url', [authJwt.verifyToken, authJwt.isModerator], this.updatePost);
         this.router.delete('/:url', [authJwt.verifyToken, authJwt.isAdmin], this.deletePost);   
